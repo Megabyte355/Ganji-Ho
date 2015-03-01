@@ -64,8 +64,10 @@ public class Board {
             } else {
                 String pos1 = getCellPositionString(column, row);
                 String pos2 = getCellPositionString(column, row + 1);
-                System.out.println("Unable to place WHITE pieces on cells " + pos1 + " and " + pos2);
+                System.out.println("Unable to place WHITE pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
             }
+        } else {
+            System.out.println("Invalid input. Try again.");
         }
         return false;
     }
@@ -86,14 +88,16 @@ public class Board {
             } else {
                 String pos1 = getCellPositionString(column, row);
                 String pos2 = getCellPositionString(column + 1, row);
-                System.out.println("Unable to place BLACK pieces on cells " + pos1 + " and " + pos2);
+                System.out.println("Unable to place BLACK pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
             }
+        } else {
+            System.out.println("Invalid input. Try again.");
         }
         return false;
     }
     
     public void printWhitePlaceableCells() {
-        ArrayList<Cell> list = GetWhitePlaceableCells();
+        ArrayList<Cell> list = getWhitePlaceableCells();
         
         String output = "Available options for WHITE: [";
         for(int i = 0; i < list.size(); i++) {
@@ -107,7 +111,7 @@ public class Board {
     }
     
     public void printBlackPlaceableCells() {
-        ArrayList<Cell> list = GetBlackPlaceableCells();
+        ArrayList<Cell> list = getBlackPlaceableCells();
         
         String output = "Available options for BLACK: [";
         for(int i = 0; i < list.size(); i++) {
@@ -120,7 +124,7 @@ public class Board {
         System.out.println(output);
     }
     
-    public ArrayList<Cell> GetWhitePlaceableCells() {
+    public ArrayList<Cell> getWhitePlaceableCells() {
         ArrayList<Cell> list = new ArrayList<Cell>();
         for(int col = 0; col < cells.length; col++) {
             for(int row = 0; row < cells[col].length; row++) {
@@ -132,7 +136,7 @@ public class Board {
         return list;
     }
 
-    public ArrayList<Cell> GetBlackPlaceableCells() {
+    public ArrayList<Cell> getBlackPlaceableCells() {
         ArrayList<Cell> list = new ArrayList<Cell>();
         for(int col = 0; col < cells.length; col++) {
             for(int row = 0; row < cells[col].length; row++) {
