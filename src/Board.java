@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
@@ -18,7 +19,7 @@ public class Board {
         cells = new Cell[totalColumns][totalRows];
         for(int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[i].length; j++) {
-                cells[i][j] = new Cell();
+                cells[i][j] = new Cell(i, j);
             }
         }
     }
@@ -91,15 +92,67 @@ public class Board {
         return false;
     }
     
+    public void printWhitePlaceableCells() {
+        ArrayList<Cell> list = GetWhitePlaceableCells();
+        
+        String output = "Available options for WHITE: [";
+        for(int i = 0; i < list.size(); i++) {
+            output += getCellPositionString(list.get(i).getColumn(), list.get(i).getRow());
+            if(i < list.size() - 1) {
+                output += ", ";
+            }
+        }
+        output += "]";
+        System.out.println(output);
+    }
+    
+    public void printBlackPlaceableCells() {
+        ArrayList<Cell> list = GetBlackPlaceableCells();
+        
+        String output = "Available options for BLACK: [";
+        for(int i = 0; i < list.size(); i++) {
+            output += getCellPositionString(list.get(i).getColumn(), list.get(i).getRow());
+            if(i < list.size() - 1) {
+                output += ", ";
+            }
+        }
+        output += "]";
+        System.out.println(output);
+    }
+    
+    public ArrayList<Cell> GetWhitePlaceableCells() {
+        ArrayList<Cell> list = new ArrayList<Cell>();
+        for(int col = 0; col < cells.length; col++) {
+            for(int row = 0; row < cells[col].length; row++) {
+                if(canPlaceWhite(col, row)) {
+                    list.add(cells[col][row]);
+                }
+            }
+        }
+        return list;
+    }
+
+    public ArrayList<Cell> GetBlackPlaceableCells() {
+        ArrayList<Cell> list = new ArrayList<Cell>();
+        for(int col = 0; col < cells.length; col++) {
+            for(int row = 0; row < cells[col].length; row++) {
+                if(canPlaceBlack(col, row)) {
+                    list.add(cells[col][row]);
+                }
+            }
+        }
+        return list;
+    }
+    
     private boolean canPlaceWhite(int column, int row) {
-        boolean columnValid = column > 0 && column < cells.length;
-        boolean rowValid = row > 0 && (row + 1) < cells[column].length;
+        boolean columnValid = column >= 0 && column < cells.length;
+        boolean rowValid = row >= 0 && (row + 1) < cells[column].length;
         return columnValid && rowValid && cells[column][row].isEmpty() && cells[column][row + 1].isEmpty();
     }
     
     private boolean canPlaceBlack(int column, int row) {
-        boolean columnValid = column > 0 && (column + 1) < cells.length;
-        boolean rowValid = row > 0 && row < cells[column].length;
+        boolean columnValid = column >= 0 && (column + 1) < cells.length;
+        boolean rowValid = row >= 0 && row < cells[column].length;
         return columnValid && rowValid && cells[column][row].isEmpty() && cells[column + 1][row].isEmpty();
     }
     

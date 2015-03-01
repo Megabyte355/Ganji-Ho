@@ -2,9 +2,27 @@
 public class Cell {
     enum CellState {EMPTY, WHITE, BLACK};
     CellState state;
+    int col;
+    int row;
     
     public Cell() {
         state = CellState.EMPTY;
+        col = 0;
+        row = 0;
+    }
+    
+    public Cell(int col, int row) {
+        state = CellState.EMPTY;
+        this.col = col;
+        this.row = row;
+    }
+    
+    public int getColumn() {
+        return col;
+    }
+    
+    public int getRow() {
+        return row;
     }
     
     public boolean isEmpty() {
