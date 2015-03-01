@@ -25,7 +25,7 @@ public class Board {
     }
     
     public String toString() {
-        String output = "";
+        String output = "\n";
         
         // Column headers
         output += "  ";
@@ -34,17 +34,18 @@ public class Board {
         }
         output += "\n";
         
-        for(int row = 0; row < cells.length; row++) {    
+        for(int row = 0; row < cells[0].length; row++) {    
 
             // Row headers
             output += alphabet.charAt(row);
 
             // Cell contents
-            for(int col = 0; col < cells[row].length; col++) {
+            for(int col = 0; col < cells.length; col++) {
                 output += " " + cells[col][row];
             }
             output += "\n";
         }
+        
         return output;
     }
     
@@ -149,15 +150,14 @@ public class Board {
     }
     
     private boolean canPlaceWhite(int column, int row) {
-        boolean columnValid = column >= 0 && column < cells.length;
-        boolean rowValid = row >= 0 && (row + 1) < cells[column].length;
-        return columnValid && rowValid && cells[column][row].isEmpty() && cells[column][row + 1].isEmpty();
+        
+        boolean validCoordinate = column >= 0 && column < cells.length && row >= 0 && (row + 1) < cells[column].length;
+        return validCoordinate && cells[column][row].isEmpty() && cells[column][row + 1].isEmpty();
     }
     
     private boolean canPlaceBlack(int column, int row) {
-        boolean columnValid = column >= 0 && (column + 1) < cells.length;
-        boolean rowValid = row >= 0 && row < cells[column].length;
-        return columnValid && rowValid && cells[column][row].isEmpty() && cells[column + 1][row].isEmpty();
+        boolean validCoordinate = column >= 0 && (column + 1) < cells.length && row >= 0 && row < cells[column].length;
+        return validCoordinate && cells[column][row].isEmpty() && cells[column + 1][row].isEmpty();
     }
     
     private String getCellPositionString(int column, int row) {

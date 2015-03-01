@@ -54,7 +54,7 @@ public class ProgramDriver {
     
     private static void printWelcomeMessage() {
         System.out.println("Ganji-Ho");
-        System.out.println("Created by Gary Chang - 29368841\n");
+        System.out.println("Created by Gary Chang - 29368841");
     }
 
 }
