@@ -28,16 +28,23 @@ public class Board {
         String output = "\n";
         
         // Column headers
-        output += "  ";
+        output += "  | ";
         for(int i = 1; i <= cells.length; i++) {
             output += i + " ";
         }
-        output += "\n";
         
+        // Splitter
+        output += "\n--+";
+        for(int i = 1; i <= cells.length; i++) {
+            output += "--";
+        }
+        
+        // Cells for each row
+        output += "\n";
         for(int row = 0; row < cells[0].length; row++) {    
 
             // Row headers
-            output += alphabet.charAt(row);
+            output += alphabet.charAt(row) + " |";
 
             // Cell contents
             for(int col = 0; col < cells.length; col++) {
