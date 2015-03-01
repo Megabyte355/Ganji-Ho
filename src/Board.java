@@ -50,7 +50,7 @@ public class Board {
     }
     
     public boolean placeWhite(String input) {
-        Pattern pattern = Pattern.compile("(\\w)(\\d)", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("([A-z])(\\d+)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(input);
         
         if(matcher.find()) {
@@ -74,7 +74,7 @@ public class Board {
     }
     
     public boolean placeBlack(String input) {
-        Pattern pattern = Pattern.compile("(\\w)(\\d)", Pattern.CASE_INSENSITIVE);
+        Pattern pattern = Pattern.compile("([A-z])(\\d+)", Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(input);
         
         if(matcher.find()) {
