@@ -42,7 +42,7 @@ public class Computer {
         return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
     }
     
-    public void playBestMove(Board board) throws BadMoveException {
+    public void playOnBoard(Board board) throws BadMoveException {
         
         // Assume children are sorted
         BoardNode bestBoardNode = root.findBestChildBoard();
@@ -93,7 +93,7 @@ public class Computer {
         node.setHeuristicValue(heuristic);
     }
     
-    // Recursive algorithm to populate all children nodes
+    // Recursive algorithm to populate all children nodes of a node
     public void generateChildren(BoardNode parentNode, int depth, Color playerTurnColor) {
         
         if(depth > this.maxDepth) {

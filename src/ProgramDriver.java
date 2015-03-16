@@ -67,7 +67,7 @@ public class ProgramDriver {
                 
                 computer.readBoard(board);
                 try {
-                    computer.playBestMove(board);
+                    computer.playOnBoard(board);
                 } catch(BadMoveException e) {
                     System.out.println(e.getMessage());
                     System.out.println("Aborting program...");
