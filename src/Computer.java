@@ -9,18 +9,18 @@ public class Computer {
     int maxDepth;
     BoardNode root;
     
-    ArrayList<ArrayList<BoardNode>> allNodes;
+//    ArrayList<ArrayList<BoardNode>> allNodes;
     
     public Computer(Color c) {
         playerColor = c;
         maxDepth = 3;
         root = null;
         
-        // Instantiate all levels
-        allNodes = new ArrayList<ArrayList<BoardNode>>();
-        for(int i = 0; i <= maxDepth; i++) {
-            allNodes.add(new ArrayList<BoardNode>());
-        }
+//        // Instantiate all levels
+//        allNodes = new ArrayList<ArrayList<BoardNode>>();
+//        for(int i = 0; i <= maxDepth; i++) {
+//            allNodes.add(new ArrayList<BoardNode>());
+//        }
     }
     
     public void readBoard(Board b) {
@@ -28,19 +28,14 @@ public class Computer {
         if(root == null) {
             // First time - evaluate all children
             root = new BoardNode(b, null);
-            allNodes.get(0).add(root);
             
             // Recursive call to get children of all children (until max depth)
             generateChildren(root, 1, playerColor);
-
-            // Sort all
-            for(ArrayList<BoardNode> list : allNodes) {
-                Collections.sort(list);
-            }
             
         } else {
             // Find the current board in children
-            int index = allNodes.get(0).indexOf(b);
+//            int index = allNodes.get(2).indexOf(b);
+//            System.out.println(index);
             
             // Make that board the new root
             
@@ -56,10 +51,19 @@ public class Computer {
         // 
     }
     
-    public String getBestMove(Board b) {
-        Cell lastMove = allNodes.get(1).get(0).lastMove;
-        return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
+    public void updateBoard(Board b) {
+        
     }
+    
+    
+    public String getBestMove(Board b) {
+//        Cell lastMove = allNodes.get(1).get(0).lastMove;
+//        return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
+        Cell lastMove = root.findBestChildBoard().getBoard().getLastMove();
+        return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
+//        return " ";
+    }
+    
     
     // Simple heuristic to evaluate a board for now    
     public void evaluateNode(BoardNode node) {
@@ -89,7 +93,7 @@ public class Computer {
             return;
         }
         
-        ArrayList<BoardNode> nodeList = allNodes.get(depth);
+//        ArrayList<BoardNode> nodeList = allNodes.get(depth);
         if(playerTurnColor == Color.BLACK) {
             ArrayList<Cell> blackMoves = parentNode.getBoard().getBlackPlaceableCells();
             
@@ -99,8 +103,9 @@ public class Computer {
                 
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
                 evaluateNode(possibleBoardNode);
-                possibleBoardNode.setParent(parentNode);
-                nodeList.add(possibleBoardNode);
+                parentNode.addChild(possibleBoardNode);
+                
+//                nodeList.add(possibleBoardNode);
                 
                 generateChildren(possibleBoardNode, depth + 1, Color.WHITE);
             }
@@ -113,8 +118,8 @@ public class Computer {
                 
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
                 evaluateNode(possibleBoardNode);
-                possibleBoardNode.setParent(parentNode);
-                nodeList.add(possibleBoardNode);
+                parentNode.addChild(possibleBoardNode);
+//                nodeList.add(possibleBoardNode);
                 
                 generateChildren(possibleBoardNode, depth + 1, Color.BLACK);
             }

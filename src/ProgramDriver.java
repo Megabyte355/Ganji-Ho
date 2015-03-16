@@ -67,8 +67,8 @@ public class ProgramDriver {
                 
                 computer.readBoard(board);
                 String move = computer.getBestMove(board);
-                
-                
+//                
+//                
                 System.out.print("Black's move: " + move);
                 if(!board.placeBlack(move)) {
                     System.out.println("Invalid move attempted by computer! Aborting game...");

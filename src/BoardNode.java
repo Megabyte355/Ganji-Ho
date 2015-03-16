@@ -4,7 +4,6 @@ import java.util.Collections;
 public class BoardNode implements Comparable<BoardNode> {
     Board board;
     int heuristic;
-    Cell lastMove;
     
     private BoardNode parent;
     private ArrayList<BoardNode> children;
@@ -13,7 +12,7 @@ public class BoardNode implements Comparable<BoardNode> {
         parent = null;
         board = b;
         heuristic = 0;
-        lastMove = (move != null) ? new Cell(move) : null;
+//        lastMove = (move != null) ? new Cell(move) : null;
         
         children = new ArrayList<BoardNode>();
     }
@@ -30,12 +29,10 @@ public class BoardNode implements Comparable<BoardNode> {
         return heuristic;
     }
     
-    public void addChild(BoardNode b) {
-        // TODO: Do we really need this?
-        
-//        b.parent = this;
-//        children.add(b);
-//        Collections.sort(children);
+    public void addChild(BoardNode child) {
+        children.add(child);
+        child.parent = this;
+        Collections.sort(children);
     }
 
     public void setParent(BoardNode p) {
@@ -46,22 +43,18 @@ public class BoardNode implements Comparable<BoardNode> {
         return parent;
     }
     
-    public BoardNode findMinChildBoard() {
-        // TODO
-//        
-//        if(children.size() == 0) {
-//            return null;
-//        }
-//        
-//        // Assume children are sorted already
-//        return children.get(0);
+    public BoardNode findBestChildBoard() {
+        if(children.size() == 0) {
+            return null;
+        }
         
-        return null;
+        // Assume children are sorted already
+        return children.get(children.size() - 1);
     }
     
-    public ArrayList<BoardNode> findAllMinChildBoards() {
-        // TODO
-        
+//    public ArrayList<BoardNode> findAllMinChildBoards() {
+//        // TODO
+//        
 //        if(children.size() == 0) {
 //            return null;
 //        }
@@ -79,9 +72,9 @@ public class BoardNode implements Comparable<BoardNode> {
 //            }
 //        }
 //        return results;
-        
-        return null;
-    }
+//        
+//        return null;
+//    }
     
     // Puts worst boards first, best last
     public int compareTo(BoardNode other) {

@@ -7,6 +7,7 @@ public class Board {
     int totalRows;
     String alphabet;    
     Cell[][] cells;
+    private Cell lastMove;
     
     String validInputRegex;
     Pattern validInputPatern;
@@ -19,6 +20,7 @@ public class Board {
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         validInputRegex = "^([A-z])(\\d+)$";
         validInputPatern = Pattern.compile(validInputRegex, Pattern.CASE_INSENSITIVE);
+        lastMove = null;
         
         // Instantiate all Cells
         cells = new Cell[totalColumns][totalRows];
@@ -43,7 +45,7 @@ public class Board {
                 cells[i][j] = new Cell(b.cells[i][j]);
             }
         }
-        
+        lastMove = new Cell(b.lastMove);
     }
     
     public String toString() {
@@ -78,6 +80,10 @@ public class Board {
         return output;
     }
     
+    public Cell getLastMove() {
+        return lastMove;
+    }
+    
     public boolean placeWhite(String input) {
         Matcher matcher = validInputPatern.matcher(input);
         
@@ -109,6 +115,7 @@ public class Board {
         if(canPlaceWhite(col, row)) {
             cells[col][row].setWhite();
             cells[col][row + 1].setWhite();
+            lastMove = new Cell(col, row);
             return true;
         } else {
             String pos1 = getCellPositionString(col, row);
@@ -123,6 +130,7 @@ public class Board {
         if(canPlaceBlack(col, row)) {
             cells[col][row].setBlack();
             cells[col + 1][row].setBlack();
+            lastMove = new Cell(col, row);
             return true;
         } else {
             String pos1 = getCellPositionString(col, row);
