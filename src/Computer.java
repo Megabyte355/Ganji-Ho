@@ -30,6 +30,9 @@ public class Computer {
             BoardNode childBoard = root.getBoardNodeInChildren(b);
             root = childBoard;
             
+            // Memory optimization - discard everything above the parent
+            root.setParent(null);
+            
             // for n=3 only (TO BE CHANGED LATER)
             generateChildren(root, 1, playerColor);
         }
