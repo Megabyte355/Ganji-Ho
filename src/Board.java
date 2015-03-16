@@ -84,17 +84,18 @@ public class Board {
         if(matcher.find()) {
             int row = alphabet.indexOf(matcher.group(1).toUpperCase());
             int column = Integer.parseInt(matcher.group(2)) - 1;
-            
+
+            return placeWhite(column, row);
             // Validate input (White pieces are placed vertically)
-            if(canPlaceWhite(column, row)) {
-                cells[column][row].setWhite();
-                cells[column][row + 1].setWhite();
-                return true;
-            } else {
-                String pos1 = getCellPositionString(column, row);
-                String pos2 = getCellPositionString(column, row + 1);
-                System.out.println("Unable to place WHITE pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
-            }
+//            if(canPlaceWhite(column, row)) {
+//                cells[column][row].setWhite();
+//                cells[column][row + 1].setWhite();
+//                return true;
+//            } else {
+//                String pos1 = getCellPositionString(column, row);
+//                String pos2 = getCellPositionString(column, row + 1);
+//                System.out.println("Unable to place WHITE pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
+//            }
         } else {
             System.out.println("Invalid input. Try again.");
         }
@@ -108,20 +109,49 @@ public class Board {
             int row = alphabet.indexOf(matcher.group(1).toUpperCase());
             int column = Integer.parseInt(matcher.group(2)) - 1;
             
+            return placeBlack(column, row);
             // Validate input (Black pieces are placed vertically)
-            if(canPlaceBlack(column, row)) {
-                cells[column][row].setBlack();
-                cells[column + 1][row].setBlack();
-                return true;
-            } else {
-                String pos1 = getCellPositionString(column, row);
-                String pos2 = getCellPositionString(column + 1, row);
-                System.out.println("Unable to place BLACK pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
-            }
+//            if(canPlaceBlack(column, row)) {
+//                cells[column][row].setBlack();
+//                cells[column + 1][row].setBlack();
+//                return true;
+//            } else {
+//                String pos1 = getCellPositionString(column, row);
+//                String pos2 = getCellPositionString(column + 1, row);
+//                System.out.println("Unable to place BLACK pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
+//            }
         } else {
             System.out.println("Invalid input. Try again.");
         }
         return false;
+    }
+    
+    public boolean placeWhite(int col, int row) {
+        // Validate input (Black pieces are placed vertically)
+        if(canPlaceWhite(col, row)) {
+            cells[col][row].setWhite();
+            cells[col][row + 1].setWhite();
+            return true;
+        } else {
+            String pos1 = getCellPositionString(col, row);
+            String pos2 = getCellPositionString(col, row + 1);
+            System.out.println("Unable to place WHITE pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
+            return false;
+        }
+    }
+    
+    public boolean placeBlack(int col, int row) {
+        // Validate input (Black pieces are placed vertically)
+        if(canPlaceBlack(col, row)) {
+            cells[col][row].setBlack();
+            cells[col + 1][row].setBlack();
+            return true;
+        } else {
+            String pos1 = getCellPositionString(col, row);
+            String pos2 = getCellPositionString(col + 1, row);
+            System.out.println("Unable to place BLACK pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
+            return false;
+        }
     }
     
     public void printWhitePlaceableCells() {
