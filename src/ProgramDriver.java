@@ -69,25 +69,11 @@ public class ProgramDriver {
                 try {
                     computer.playBestMove(board);
                 } catch(BadMoveException e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Aborting program...");
                     return;
                 }
-                
-                
-//                
-//                
-//                System.out.print("Black's move: " + move);
-//                if(!board.placeBlack(move)) {
-//                    System.out.println("Invalid move attempted by computer! Aborting game...");
-//                    return;
-//                }
-                
-//                System.out.println("test");
-//                boolean validMove = false;
-//                while(!validMove) {
-//                    System.out.print("Black's move: ");
-//                    String input = reader.nextLine();
-//                    validMove = board.placeBlack(input);
-//                }
+
             } else {
                 System.out.println("Black ran out of moves! White wins!");
                 break;

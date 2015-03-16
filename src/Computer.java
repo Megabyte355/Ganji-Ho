@@ -8,19 +8,11 @@ public class Computer {
     Color playerColor;
     int maxDepth;
     BoardNode root;
-    
-//    ArrayList<ArrayList<BoardNode>> allNodes;
-    
+
     public Computer(Color c) {
         playerColor = c;
         maxDepth = 3;
         root = null;
-        
-//        // Instantiate all levels
-//        allNodes = new ArrayList<ArrayList<BoardNode>>();
-//        for(int i = 0; i <= maxDepth; i++) {
-//            allNodes.add(new ArrayList<BoardNode>());
-//        }
     }
     
     public void readBoard(Board b) {
@@ -44,14 +36,15 @@ public class Computer {
     }
     
     public String getBestMove(Board b) {
-//        Cell lastMove = allNodes.get(1).get(0).lastMove;
-//        return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
+        
+        // Assume children are sorted
         Cell lastMove = root.findBestChildBoard().getBoard().getLastMove();
         return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
-//        return " ";
     }
     
     public void playBestMove(Board board) throws BadMoveException {
+        
+        // Assume children are sorted
         BoardNode bestBoardNode = root.findBestChildBoard();
         Cell lastMove = bestBoardNode.getBoard().getLastMove();
         
@@ -106,7 +99,6 @@ public class Computer {
             return;
         }
         
-//        ArrayList<BoardNode> nodeList = allNodes.get(depth);
         if(playerTurnColor == Color.BLACK) {
             ArrayList<Cell> blackMoves = parentNode.getBoard().getBlackPlaceableCells();
             
@@ -117,8 +109,6 @@ public class Computer {
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
                 evaluateNode(possibleBoardNode);
                 parentNode.addChild(possibleBoardNode);
-                
-//                nodeList.add(possibleBoardNode);
                 
                 generateChildren(possibleBoardNode, depth + 1, Color.WHITE);
             }
@@ -132,7 +122,6 @@ public class Computer {
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
                 evaluateNode(possibleBoardNode);
                 parentNode.addChild(possibleBoardNode);
-//                nodeList.add(possibleBoardNode);
                 
                 generateChildren(possibleBoardNode, depth + 1, Color.BLACK);
             }

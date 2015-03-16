@@ -12,7 +12,6 @@ public class BoardNode implements Comparable<BoardNode> {
         parent = null;
         board = b;
         heuristic = 0;
-//        lastMove = (move != null) ? new Cell(move) : null;
         
         children = new ArrayList<BoardNode>();
     }
@@ -61,30 +60,6 @@ public class BoardNode implements Comparable<BoardNode> {
         }
         return null;
     }
-    
-//    public ArrayList<BoardNode> findAllMinChildBoards() {
-//        // TODO
-//        
-//        if(children.size() == 0) {
-//            return null;
-//        }
-//        ArrayList<BoardNode> results = new ArrayList<BoardNode>();
-//        BoardNode minBoard = children.get(0);
-//        int minHeuristic = minBoard.heuristic;
-//        results.add(minBoard);
-//        
-//        // Assume children are sorted already
-//        for(BoardNode b : children) {
-//            if(b.heuristic == minHeuristic) {
-//                results.add(b);
-//            } else {
-//                break;
-//            }
-//        }
-//        return results;
-//        
-//        return null;
-//    }
     
     // Puts worst boards first, best last
     public int compareTo(BoardNode other) {
