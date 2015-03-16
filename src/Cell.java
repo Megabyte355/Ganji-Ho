@@ -17,6 +17,12 @@ public class Cell {
         this.row = row;
     }
     
+    public Cell(Cell c) {
+        this.col = c.col;
+        this.row = c.row;
+        this.state = c.state;
+    }
+    
     public int getColumn() {
         return col;
     }
@@ -65,5 +71,9 @@ public class Cell {
         } else {
             return ".";
         }
+    }
+    
+    public boolean equals(Cell other) {
+        return (state == other.state) && (col == other.col) && (row == other.row);
     }
 }

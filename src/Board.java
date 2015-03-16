@@ -8,12 +8,17 @@ public class Board {
     String alphabet;    
     Cell[][] cells;
     
+    String validInputRegex;
+    Pattern validInputPatern;
+    
     
     public Board() {
         // Default values
         totalColumns = 8;
         totalRows = 8;
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        validInputRegex = "^([A-z])(\\d+)$";
+        validInputPatern = Pattern.compile(validInputRegex, Pattern.CASE_INSENSITIVE);
         
         // Instantiate all Cells
         cells = new Cell[totalColumns][totalRows];
@@ -22,6 +27,23 @@ public class Board {
                 cells[i][j] = new Cell(i, j);
             }
         }
+    }
+    
+    public Board(Board b) {
+        totalColumns = b.totalColumns;
+        totalRows = b.totalRows;
+        alphabet = b.alphabet;
+        
+        validInputRegex = b.validInputRegex;
+        validInputPatern = b.validInputPatern;
+        
+        cells = new Cell[totalColumns][totalRows];
+        for(int i = 0; i < cells.length; i++) {
+            for(int j = 0; j < cells[i].length; j++) {
+                cells[i][j] = new Cell(b.cells[i][j]);
+            }
+        }
+        
     }
     
     public String toString() {
@@ -57,8 +79,7 @@ public class Board {
     }
     
     public boolean placeWhite(String input) {
-        Pattern pattern = Pattern.compile("([A-z])(\\d+)", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(input);
+        Matcher matcher = validInputPatern.matcher(input);
         
         if(matcher.find()) {
             int row = alphabet.indexOf(matcher.group(1).toUpperCase());
@@ -81,8 +102,7 @@ public class Board {
     }
     
     public boolean placeBlack(String input) {
-        Pattern pattern = Pattern.compile("([A-z])(\\d+)", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(input);
+        Matcher matcher = validInputPatern.matcher(input);
         
         if(matcher.find()) {
             int row = alphabet.indexOf(matcher.group(1).toUpperCase());
