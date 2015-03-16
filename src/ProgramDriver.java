@@ -66,14 +66,20 @@ public class ProgramDriver {
             if(blackCanPlay) {
                 
                 computer.readBoard(board);
-                String move = computer.getBestMove(board);
-//                
-//                
-                System.out.print("Black's move: " + move);
-                if(!board.placeBlack(move)) {
-                    System.out.println("Invalid move attempted by computer! Aborting game...");
+                try {
+                    computer.playBestMove(board);
+                } catch(BadMoveException e) {
                     return;
                 }
+                
+                
+//                
+//                
+//                System.out.print("Black's move: " + move);
+//                if(!board.placeBlack(move)) {
+//                    System.out.println("Invalid move attempted by computer! Aborting game...");
+//                    return;
+//                }
                 
 //                System.out.println("test");
 //                boolean validMove = false;

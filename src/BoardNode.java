@@ -52,6 +52,16 @@ public class BoardNode implements Comparable<BoardNode> {
         return children.get(children.size() - 1);
     }
     
+    public BoardNode getBoardNodeInChildren(Board b) {
+        
+        for(BoardNode child : children) {
+            if(child.isSameAs(new BoardNode(b, null))) {
+                return child;
+            }
+        }
+        return null;
+    }
+    
 //    public ArrayList<BoardNode> findAllMinChildBoards() {
 //        // TODO
 //        
@@ -86,10 +96,11 @@ public class BoardNode implements Comparable<BoardNode> {
         return 0;
     }
     
-    public boolean equals(BoardNode b) {
+    public boolean isSameAs(BoardNode b) {
+        // Only verifies cell contents
         for(int col = 0; col < board.cells.length; col++) {
-            for(int row = 0; row < board.cells.length; row++) {
-                if(board.cells[col][row].equals(b.board.cells[col][row])) {
+            for(int row = 0; row < board.cells[col].length; row++) {
+                if(!board.cells[col][row].equals(b.board.cells[col][row])) {
                     return false;
                 }
             }

@@ -33,28 +33,15 @@ public class Computer {
             generateChildren(root, 1, playerColor);
             
         } else {
+            
             // Find the current board in children
-//            int index = allNodes.get(2).indexOf(b);
-//            System.out.println(index);
+            BoardNode childBoard = root.getBoardNodeInChildren(b);
+            root = childBoard;
             
-            // Make that board the new root
-            
-            // Evaluate the depth+1 level
+            // for n=3 only (TO BE CHANGED LATER)
+            generateChildren(root, 1, playerColor);
         }
-        
-        // Get list of possible moves
-        // Evaluate heuristic for each
-        
-        // Create children of possible moves
-        // Evaluate heuristic for each
-        
-        // 
     }
-    
-    public void updateBoard(Board b) {
-        
-    }
-    
     
     public String getBestMove(Board b) {
 //        Cell lastMove = allNodes.get(1).get(0).lastMove;
@@ -62,6 +49,32 @@ public class Computer {
         Cell lastMove = root.findBestChildBoard().getBoard().getLastMove();
         return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
 //        return " ";
+    }
+    
+    public void playBestMove(Board board) throws BadMoveException {
+        BoardNode bestBoardNode = root.findBestChildBoard();
+        Cell lastMove = bestBoardNode.getBoard().getLastMove();
+        
+        boolean success = false;
+        switch(playerColor) {
+        case WHITE:
+            success = board.placeWhite(lastMove.col, lastMove.row);
+            break;
+        case BLACK:
+            success = board.placeBlack(lastMove.col, lastMove.row);
+            break;
+        default:
+            break;
+        }
+        
+        if(!success) {
+            String moveStr = board.getCellPositionString(lastMove.col, lastMove.row);
+            throw new BadMoveException("Invalid move attempted by Computer at " + moveStr);
+        }
+        
+        // Update the board
+        root = bestBoardNode;
+        
     }
     
     
