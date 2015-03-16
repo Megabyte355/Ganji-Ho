@@ -84,18 +84,7 @@ public class Board {
         if(matcher.find()) {
             int row = alphabet.indexOf(matcher.group(1).toUpperCase());
             int column = Integer.parseInt(matcher.group(2)) - 1;
-
             return placeWhite(column, row);
-            // Validate input (White pieces are placed vertically)
-//            if(canPlaceWhite(column, row)) {
-//                cells[column][row].setWhite();
-//                cells[column][row + 1].setWhite();
-//                return true;
-//            } else {
-//                String pos1 = getCellPositionString(column, row);
-//                String pos2 = getCellPositionString(column, row + 1);
-//                System.out.println("Unable to place WHITE pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
-//            }
         } else {
             System.out.println("Invalid input. Try again.");
         }
@@ -108,18 +97,7 @@ public class Board {
         if(matcher.find()) {
             int row = alphabet.indexOf(matcher.group(1).toUpperCase());
             int column = Integer.parseInt(matcher.group(2)) - 1;
-            
             return placeBlack(column, row);
-            // Validate input (Black pieces are placed vertically)
-//            if(canPlaceBlack(column, row)) {
-//                cells[column][row].setBlack();
-//                cells[column + 1][row].setBlack();
-//                return true;
-//            } else {
-//                String pos1 = getCellPositionString(column, row);
-//                String pos2 = getCellPositionString(column + 1, row);
-//                System.out.println("Unable to place BLACK pieces on cells " + pos1 + " and " + pos2 + ". Try again.");
-//            }
         } else {
             System.out.println("Invalid input. Try again.");
         }
@@ -217,7 +195,7 @@ public class Board {
         return validCoordinate && cells[column][row].isEmpty() && cells[column + 1][row].isEmpty();
     }
     
-    private String getCellPositionString(int column, int row) {
+    public String getCellPositionString(int column, int row) {
         if(row < alphabet.length()) {
             column++;
             String rowChar = Character.toString(alphabet.charAt(row));
