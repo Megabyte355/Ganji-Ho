@@ -47,6 +47,9 @@ public class Computer {
         // Assume children are sorted
         BoardNode bestBoardNode = root.findBestChildBoard();
         Cell lastMove = bestBoardNode.getBoard().getLastMove();
+        String choice = board.getCellPositionString(lastMove.col, lastMove.row);
+        System.out.println("Computer decides to play at \"" + choice + "\".");
+        System.out.println("Heuristic value: " + bestBoardNode.heuristic);
         
         boolean success = false;
         switch(playerColor) {
@@ -62,14 +65,12 @@ public class Computer {
         
         if(!success) {
             String moveStr = board.getCellPositionString(lastMove.col, lastMove.row);
-            throw new BadMoveException("Invalid move attempted by Computer at " + moveStr);
+            throw new BadMoveException("Invalid move attempted by Computer at \"" + moveStr + "\".");
         }
         
         // Update the board
         root = bestBoardNode;
-        
     }
-    
     
     // Simple heuristic to evaluate a board for now    
     public void evaluateNode(BoardNode node) {
