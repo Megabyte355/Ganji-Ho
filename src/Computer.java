@@ -20,34 +20,35 @@ public class Computer {
     }
     
     public void readBoard(Board b) {
+        root = new BoardNode(b, null);
         
-        if(root == null) {
-            // First time - evaluate all children
-            root = new BoardNode(b, null);
-            
-            // Recursive call to get children of all children (until max depth)
-            leaves.clear();
-            generateChildren(root, 1, playerColor);
+        // Recursive call to get children of all children (until max depth)
+        leaves.clear();
+        generateChildren(root, 1, playerColor);
+        evaluateTree();
+//        if(root == null) {
+//            // First time - evaluate all children
+//            root = new BoardNode(b, null);
+//            
+//            // Recursive call to get children of all children (until max depth)
+//            leaves.clear();
+//            generateChildren(root, 1, playerColor);
 //            evaluateTree();
-            
-        } else {
-            
-            // Find the current board in children
-            BoardNode childBoard = root.getBoardNodeInChildren(b);
-            
-//            if(childBoard == null) {
-//                int x = 0;
-//            }
-            root = childBoard;
-            
-            // Memory optimization - discard everything above the parent
-            root.setParent(null);
-            
-            // for n=3 only (TO BE CHANGED LATER)
-            leaves.clear();
-            generateChildren(root, 1, playerColor);
+//            
+//        } else {
+//            
+//            // Find the current board in children
+//            BoardNode childBoard = root.getBoardNodeInChildren(b);
+//            root = childBoard;
+//            
+//            // Memory optimization - discard everything above the parent
+//            root.setParent(null);
+//            
+//            // for n=3 only (TO BE CHANGED LATER)
+//            leaves.clear();
+//            generateChildren(root, 1, playerColor);
 //            evaluateTree();
-        }
+//        }
     }
     
     public String getBestMove(Board b) {
@@ -116,29 +117,36 @@ public class Computer {
     }
     
     public void evaluateTree() {
-        // TODO
-        // Erase all heuristics
-        // Reevaluate everything - use "leaves" ArrayList !
         resetHeuristics(root);
         
         for(BoardNode current : leaves) {
             evaluateNode(current);
-            
-            Cell.CellState state = current.getBoard().getLastMove().state;
-            
-            int parentHeuristic = current.getParent().getHeuristicValue();
-            int currentHeuristic = current.getHeuristicValue();
-            
-            if((state == Cell.CellState.WHITE && playerColor == Color.WHITE) || state == Cell.CellState.BLACK && playerColor == Color.BLACK) {
-                // If it was the computer that played - Maximize
-                if(parentHeuristic < currentHeuristic) {
-                    current.getParent().setHeuristicValue(currentHeuristic);                    
-                }
-            } else {
-                // If it was the opponent who played - Minimize
-                if(parentHeuristic > currentHeuristic) {
-                    current.getParent().setHeuristicValue(currentHeuristic);                    
-                }
+            minimaxPropagation(current);
+        }
+    }
+    
+    public void minimaxPropagation(BoardNode node) {
+        if(node == root) {
+            return;
+        }
+        
+        Cell.CellState state = node.getBoard().getLastMove().state;
+        BoardNode parentNode = node.getParent();
+        
+        int parentHeuristic = parentNode.getHeuristicValue();
+        int currentHeuristic = node.getHeuristicValue();
+        
+        if((state == Cell.CellState.WHITE && playerColor == Color.WHITE) || state == Cell.CellState.BLACK && playerColor == Color.BLACK) {
+            // If it was the computer that played - Maximize
+            if(parentHeuristic < currentHeuristic) {
+                parentNode.setHeuristicValue(currentHeuristic);
+                minimaxPropagation(parentNode);
+            }
+        } else {
+            // If it was the opponent who played - Minimize
+            if(parentHeuristic > currentHeuristic) {
+                parentNode.setHeuristicValue(currentHeuristic);
+                minimaxPropagation(parentNode);
             }
         }
     }
@@ -147,7 +155,8 @@ public class Computer {
     public void generateChildren(BoardNode parentNode, int depth, Color playerTurnColor) {
         
         if(depth > this.maxDepth) {
-//            leaves.add(parentNode);
+            // Keep track of every leaf
+            leaves.add(parentNode);
             return;
         }
         
@@ -159,8 +168,11 @@ public class Computer {
                 possibleBoard.placeBlack(c.col, c.row);
                 
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
-                evaluateNode(possibleBoardNode);
-                parentNode.addChild(possibleBoardNode);
+                
+                if(!parentNode.hasChild(possibleBoardNode)) {
+                    parentNode.addChild(possibleBoardNode);
+                }
+                
                 generateChildren(possibleBoardNode, depth + 1, Color.WHITE);
             }
         } else if(playerTurnColor == Color.WHITE) {
@@ -171,11 +183,13 @@ public class Computer {
                 possibleBoard.placeWhite(c.col, c.row);
                 
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
-                evaluateNode(possibleBoardNode);
-                parentNode.addChild(possibleBoardNode);
+                
+                if(!parentNode.hasChild(possibleBoardNode)) {
+                    parentNode.addChild(possibleBoardNode);
+                }
+                
                 generateChildren(possibleBoardNode, depth + 1, Color.BLACK);
             }
         }
     }
-    
 }
