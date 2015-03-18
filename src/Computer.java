@@ -133,18 +133,18 @@ public class Computer {
         Cell.CellState state = node.getBoard().getLastMove().state;
         BoardNode parentNode = node.getParent();
         
-        int parentHeuristic = parentNode.getHeuristicValue();
-        int currentHeuristic = node.getHeuristicValue();
+        Integer parentHeuristic = parentNode.getHeuristicValue();
+        Integer currentHeuristic = node.getHeuristicValue();
         
         if((state == Cell.CellState.WHITE && playerColor == Color.WHITE) || state == Cell.CellState.BLACK && playerColor == Color.BLACK) {
             // If it was the computer that played - Maximize
-            if(parentHeuristic < currentHeuristic) {
+            if(parentHeuristic == null || parentHeuristic < currentHeuristic) {
                 parentNode.setHeuristicValue(currentHeuristic);
                 minimaxPropagation(parentNode);
             }
         } else {
             // If it was the opponent who played - Minimize
-            if(parentHeuristic > currentHeuristic) {
+            if(parentHeuristic == null || parentHeuristic > currentHeuristic) {
                 parentNode.setHeuristicValue(currentHeuristic);
                 minimaxPropagation(parentNode);
             }

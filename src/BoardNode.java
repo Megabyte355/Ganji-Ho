@@ -3,7 +3,7 @@ import java.util.Collections;
 
 public class BoardNode implements Comparable<BoardNode> {
     Board board;
-    int heuristic;
+    Integer heuristic;
     
     private BoardNode parent;
     private ArrayList<BoardNode> children;
@@ -11,7 +11,7 @@ public class BoardNode implements Comparable<BoardNode> {
     public BoardNode(Board b, Cell move) {
         parent = null;
         board = b;
-        heuristic = 0;
+        heuristic = null;
         
         children = new ArrayList<BoardNode>();
     }
@@ -20,11 +20,11 @@ public class BoardNode implements Comparable<BoardNode> {
         return board;
     }
     
-    public void setHeuristicValue(int h) {
+    public void setHeuristicValue(Integer h) {
         heuristic = h;
     }
     
-    public int getHeuristicValue() {
+    public Integer getHeuristicValue() {
         return heuristic;
     }
     
