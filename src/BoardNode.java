@@ -31,7 +31,7 @@ public class BoardNode implements Comparable<BoardNode> {
     public void addChild(BoardNode child) {
         children.add(child);
         child.parent = this;
-        Collections.sort(children);
+//        Collections.sort(children);
     }
 
     public void setParent(BoardNode p) {
@@ -42,13 +42,33 @@ public class BoardNode implements Comparable<BoardNode> {
         return parent;
     }
     
+    public ArrayList<BoardNode> getChildren() {
+        return children;
+    }
+    
     public BoardNode findBestChildBoard() {
-        if(children.size() == 0) {
-            return null;
-        }
+
+      if(children.size() == 0) {
+          return null;
+      }
+      
+      BoardNode currentMaxNode = children.get(0);
+      int currentMaxHeuristic = currentMaxNode.getHeuristicValue();
+
+      for(BoardNode n : children) {
+          if(n.getHeuristicValue() > currentMaxHeuristic) {
+              currentMaxNode = n;
+              currentMaxHeuristic = n.getHeuristicValue();
+          }
+      }
+      
+      if(currentMaxNode == null) {
+          int x = 0;
+      }
+      return currentMaxNode;
         
-        // Assume children are sorted already
-        return children.get(children.size() - 1);
+//        // Assume children are sorted already
+//        return children.get(children.size() - 1);
     }
     
     public BoardNode getBoardNodeInChildren(Board b) {

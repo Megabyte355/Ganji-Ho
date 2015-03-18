@@ -8,11 +8,15 @@ public class Computer {
     Color playerColor;
     int maxDepth;
     BoardNode root;
+    
+    private ArrayList<BoardNode> leaves;
 
     public Computer(Color c) {
         playerColor = c;
         maxDepth = 3;
         root = null;
+        
+        leaves = new ArrayList<BoardNode>();
     }
     
     public void readBoard(Board b) {
@@ -22,19 +26,27 @@ public class Computer {
             root = new BoardNode(b, null);
             
             // Recursive call to get children of all children (until max depth)
+            leaves.clear();
             generateChildren(root, 1, playerColor);
+//            evaluateTree();
             
         } else {
             
             // Find the current board in children
             BoardNode childBoard = root.getBoardNodeInChildren(b);
+            
+//            if(childBoard == null) {
+//                int x = 0;
+//            }
             root = childBoard;
             
             // Memory optimization - discard everything above the parent
             root.setParent(null);
             
             // for n=3 only (TO BE CHANGED LATER)
+            leaves.clear();
             generateChildren(root, 1, playerColor);
+//            evaluateTree();
         }
     }
     
@@ -96,10 +108,46 @@ public class Computer {
         node.setHeuristicValue(heuristic);
     }
     
+    public void resetHeuristics(BoardNode root) {
+        root.setHeuristicValue(0);
+        for(BoardNode child : root.getChildren()) {
+            resetHeuristics(child);
+        }
+    }
+    
+    public void evaluateTree() {
+        // TODO
+        // Erase all heuristics
+        // Reevaluate everything - use "leaves" ArrayList !
+        resetHeuristics(root);
+        
+        for(BoardNode current : leaves) {
+            evaluateNode(current);
+            
+            Cell.CellState state = current.getBoard().getLastMove().state;
+            
+            int parentHeuristic = current.getParent().getHeuristicValue();
+            int currentHeuristic = current.getHeuristicValue();
+            
+            if((state == Cell.CellState.WHITE && playerColor == Color.WHITE) || state == Cell.CellState.BLACK && playerColor == Color.BLACK) {
+                // If it was the computer that played - Maximize
+                if(parentHeuristic < currentHeuristic) {
+                    current.getParent().setHeuristicValue(currentHeuristic);                    
+                }
+            } else {
+                // If it was the opponent who played - Minimize
+                if(parentHeuristic > currentHeuristic) {
+                    current.getParent().setHeuristicValue(currentHeuristic);                    
+                }
+            }
+        }
+    }
+    
     // Recursive algorithm to populate all children nodes of a node
     public void generateChildren(BoardNode parentNode, int depth, Color playerTurnColor) {
         
         if(depth > this.maxDepth) {
+//            leaves.add(parentNode);
             return;
         }
         
@@ -113,7 +161,6 @@ public class Computer {
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
                 evaluateNode(possibleBoardNode);
                 parentNode.addChild(possibleBoardNode);
-                
                 generateChildren(possibleBoardNode, depth + 1, Color.WHITE);
             }
         } else if(playerTurnColor == Color.WHITE) {
@@ -126,7 +173,6 @@ public class Computer {
                 BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
                 evaluateNode(possibleBoardNode);
                 parentNode.addChild(possibleBoardNode);
-                
                 generateChildren(possibleBoardNode, depth + 1, Color.BLACK);
             }
         }

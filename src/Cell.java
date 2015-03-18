@@ -1,6 +1,6 @@
 
 public class Cell {
-    enum CellState {EMPTY, WHITE, BLACK};
+    public enum CellState {EMPTY, WHITE, BLACK};
     CellState state;
     int col;
     int row;

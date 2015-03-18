@@ -15,8 +15,8 @@ public class Board {
     
     public Board() {
         // Default values
-        totalColumns = 8;
-        totalRows = 8;
+        totalColumns = 4;
+        totalRows = 4;
         alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         validInputRegex = "^([A-z])(\\d+)$";
         validInputPatern = Pattern.compile(validInputRegex, Pattern.CASE_INSENSITIVE);
