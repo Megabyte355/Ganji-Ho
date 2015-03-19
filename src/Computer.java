@@ -8,47 +8,22 @@ public class Computer {
     Color playerColor;
     int maxDepth;
     BoardNode root;
-    
     private ArrayList<BoardNode> leaves;
 
     public Computer(Color c) {
         playerColor = c;
         maxDepth = 3;
         root = null;
-        
         leaves = new ArrayList<BoardNode>();
     }
     
     public void readBoard(Board b) {
         root = new BoardNode(b, null);
+        leaves.clear();
         
         // Recursive call to get children of all children (until max depth)
-        leaves.clear();
         generateChildren(root, 1, playerColor);
         evaluateTree();
-//        if(root == null) {
-//            // First time - evaluate all children
-//            root = new BoardNode(b, null);
-//            
-//            // Recursive call to get children of all children (until max depth)
-//            leaves.clear();
-//            generateChildren(root, 1, playerColor);
-//            evaluateTree();
-//            
-//        } else {
-//            
-//            // Find the current board in children
-//            BoardNode childBoard = root.getBoardNodeInChildren(b);
-//            root = childBoard;
-//            
-//            // Memory optimization - discard everything above the parent
-//            root.setParent(null);
-//            
-//            // for n=3 only (TO BE CHANGED LATER)
-//            leaves.clear();
-//            generateChildren(root, 1, playerColor);
-//            evaluateTree();
-//        }
     }
     
     public String getBestMove(Board b) {
@@ -125,6 +100,7 @@ public class Computer {
         }
     }
     
+    // Recursively propagate values up the tree
     public void minimaxPropagation(BoardNode node) {
         if(node == root) {
             return;
