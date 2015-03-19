@@ -163,6 +163,11 @@ public class Computer {
         if(playerTurnColor == Color.BLACK) {
             ArrayList<Cell> blackMoves = parentNode.getBoard().getBlackPlaceableCells();
             
+            if(blackMoves.size() == 0) {
+                leaves.add(parentNode);
+                return;
+            }
+            
             for(Cell c : blackMoves) {
                 Board possibleBoard = new Board(parentNode.getBoard());
                 possibleBoard.placeBlack(c.col, c.row);
@@ -177,6 +182,11 @@ public class Computer {
             }
         } else if(playerTurnColor == Color.WHITE) {
             ArrayList<Cell> whiteMoves = parentNode.getBoard().getWhitePlaceableCells();
+            
+            if(whiteMoves.size() == 0) {
+                leaves.add(parentNode);
+                return;
+            }
             
             for(Cell c : whiteMoves) {
                 Board possibleBoard = new Board(parentNode.getBoard());
