@@ -10,7 +10,8 @@ public class ProgramDriver {
         
         System.out.println("\nChoose a game mode:");
         System.out.println("\t1 - Player vs Computer");
-        System.out.println("\t2 - Player vs Player");
+        System.out.println("\t2 - Computer vs Player");
+        System.out.println("\t3 - Player vs Player");
         System.out.print("Choice: ");
         String input = reader.nextLine();
         
@@ -22,8 +23,10 @@ public class ProgramDriver {
         }
         
         if(option == 1) {
-            onePlayerGame();
+            onePlayerGameTypeA();
         } else if(option == 2) {
+            onePlayerGameTypeB();
+        } else if(option == 3) {
             twoPlayerGame();
         }
         
@@ -32,7 +35,7 @@ public class ProgramDriver {
         
     }
 
-    private static void onePlayerGame() {
+    private static void onePlayerGameTypeA() {
         Board board = new Board();
         Scanner reader = new Scanner(System.in);
         
@@ -74,6 +77,55 @@ public class ProgramDriver {
                     return;
                 }
 
+            } else {
+                System.out.println("Black ran out of moves! White wins!");
+                break;
+            }
+            System.out.println(board);
+        }
+        reader.close();
+    }
+    
+    private static void onePlayerGameTypeB() {
+        Board board = new Board();
+        Scanner reader = new Scanner(System.in);
+        
+        Computer computer = new Computer(Computer.Color.WHITE);
+        
+        System.out.println(board);
+        
+        boolean whiteCanPlay = board.getWhitePlaceableCells().size() > 0; 
+        boolean blackCanPlay = board.getBlackPlaceableCells().size() > 0;
+        while(whiteCanPlay && blackCanPlay) {
+
+            // White player's turn
+            board.printWhitePlaceableCells();
+            whiteCanPlay = board.getWhitePlaceableCells().size() > 0;
+            if(whiteCanPlay) {
+                computer.readBoard(board);
+                try {
+                    computer.playOnBoard(board);
+                } catch(BadMoveException e) {
+                    System.out.println(e.getMessage());
+                    System.out.println("Aborting program...");
+                    return;
+                }
+            } else {
+                System.out.println("White ran out of moves! Black wins!");
+                break;
+            }
+            System.out.println(board);
+
+            // Black player's turn
+            board.printBlackPlaceableCells();
+            blackCanPlay = board.getBlackPlaceableCells().size() > 0;
+            if(blackCanPlay) {
+                boolean validMove = false;
+                while(!validMove) {
+                    System.out.print("Black's move: ");
+                    String input = reader.nextLine();
+                    validMove = board.placeBlack(input);
+                }
             } else {
                 System.out.println("Black ran out of moves! White wins!");
                 break;
