@@ -4,20 +4,27 @@ import java.util.Random;
 public class BoardNode implements Comparable<BoardNode> {
     Board board;
     Integer heuristic;
+    Color playerMove;
     
     private BoardNode parent;
     private ArrayList<BoardNode> children;
     
-    public BoardNode(Board b, Cell move) {
+    public BoardNode(Board b, Color color) {
         parent = null;
         board = b;
         heuristic = null;
+        playerMove = color;
         
         children = new ArrayList<BoardNode>();
     }
     
     public Board getBoard() {
         return board;
+    }
+    
+    public Color getPlayerColor()
+    {
+        return playerMove;
     }
     
     public void setHeuristicValue(Integer h) {

@@ -163,7 +163,7 @@ public class Computer {
                 Board possibleBoard = new Board(parentNode.getBoard());
                 possibleBoard.placeBlack(c.col, c.row);
                 
-                BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
+                BoardNode possibleBoardNode = new BoardNode(possibleBoard, Color.BLACK);
                 
                 if(!parentNode.hasChild(possibleBoardNode)) {
                     parentNode.addChild(possibleBoardNode);
@@ -183,7 +183,7 @@ public class Computer {
                 Board possibleBoard = new Board(parentNode.getBoard());
                 possibleBoard.placeWhite(c.col, c.row);
                 
-                BoardNode possibleBoardNode = new BoardNode(possibleBoard, c);
+                BoardNode possibleBoardNode = new BoardNode(possibleBoard, Color.WHITE);
                 
                 if(!parentNode.hasChild(possibleBoardNode)) {
                     parentNode.addChild(possibleBoardNode);
