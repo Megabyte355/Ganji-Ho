@@ -6,7 +6,7 @@ public class Board {
     int totalColumns;
     int totalRows;
     String alphabet;    
-    Cell[][] cells;
+    int[][] cells;
     private Cell lastMove;
     
     String validInputRegex;
@@ -23,12 +23,7 @@ public class Board {
         lastMove = null;
         
         // Instantiate all Cells
-        cells = new Cell[totalColumns][totalRows];
-        for(int i = 0; i < cells.length; i++) {
-            for(int j = 0; j < cells[i].length; j++) {
-                cells[i][j] = new Cell(i, j);
-            }
-        }
+        cells = new int[totalColumns][totalRows];
     }
     
     public Board(Board b) {
@@ -39,10 +34,10 @@ public class Board {
         validInputRegex = b.validInputRegex;
         validInputPatern = b.validInputPatern;
         
-        cells = new Cell[totalColumns][totalRows];
+        cells = new int[totalColumns][totalRows];
         for(int i = 0; i < cells.length; i++) {
             for(int j = 0; j < cells[i].length; j++) {
-                cells[i][j] = new Cell(b.cells[i][j]);
+                cells[i][j] = b.cells[i][j];
             }
         }
         lastMove = new Cell(b.lastMove);
@@ -72,7 +67,13 @@ public class Board {
 
             // Cell contents
             for(int col = 0; col < cells.length; col++) {
-                output += " " + cells[col][row];
+                char character = '.';
+                if(cells[col][row] == 1) {
+                    character = 'w';
+                } else if(cells[col][row] == 2) {
+                    character = 'b';
+                }
+                output += " " + character;
             }
             output += "\n";
         }
@@ -113,8 +114,8 @@ public class Board {
     public boolean placeWhite(int col, int row) {
         // Validate input (Black pieces are placed vertically)
         if(canPlaceWhite(col, row)) {
-            cells[col][row].setWhite();
-            cells[col][row + 1].setWhite();
+            cells[col][row] = 1;
+            cells[col][row + 1] = 1;
             lastMove = new Cell(col, row);
             return true;
         } else {
@@ -128,8 +129,8 @@ public class Board {
     public boolean placeBlack(int col, int row) {
         // Validate input (Black pieces are placed vertically)
         if(canPlaceBlack(col, row)) {
-            cells[col][row].setBlack();
-            cells[col + 1][row].setBlack();
+            cells[col][row] = 2;
+            cells[col + 1][row] = 2;
             lastMove = new Cell(col, row);
             return true;
         } else {
@@ -145,7 +146,7 @@ public class Board {
         
         String output = "Available options for WHITE: [";
         for(int i = 0; i < list.size(); i++) {
-            output += getCellPositionString(list.get(i).getColumn(), list.get(i).getRow());
+            output += getCellPositionString(list.get(i).col, list.get(i).row);
             if(i < list.size() - 1) {
                 output += ", ";
             }
@@ -159,7 +160,7 @@ public class Board {
         
         String output = "Available options for BLACK: [";
         for(int i = 0; i < list.size(); i++) {
-            output += getCellPositionString(list.get(i).getColumn(), list.get(i).getRow());
+            output += getCellPositionString(list.get(i).col, list.get(i).row);
             if(i < list.size() - 1) {
                 output += ", ";
             }
@@ -173,7 +174,7 @@ public class Board {
         for(int col = 0; col < cells.length; col++) {
             for(int row = 0; row < cells[col].length; row++) {
                 if(canPlaceWhite(col, row)) {
-                    list.add(cells[col][row]);
+                    list.add(new Cell(col, row));
                 }
             }
         }
@@ -185,7 +186,7 @@ public class Board {
         for(int col = 0; col < cells.length; col++) {
             for(int row = 0; row < cells[col].length; row++) {
                 if(canPlaceBlack(col, row)) {
-                    list.add(cells[col][row]);
+                    list.add(new Cell(col, row));
                 }
             }
         }
@@ -195,12 +196,16 @@ public class Board {
     private boolean canPlaceWhite(int column, int row) {
         
         boolean validCoordinate = column >= 0 && column < cells.length && row >= 0 && (row + 1) < cells[column].length;
-        return validCoordinate && cells[column][row].isEmpty() && cells[column][row + 1].isEmpty();
+        return validCoordinate && cells[column][row] == 0 && cells[column][row + 1] == 0;
     }
     
     private boolean canPlaceBlack(int column, int row) {
         boolean validCoordinate = column >= 0 && (column + 1) < cells.length && row >= 0 && row < cells[column].length;
-        return validCoordinate && cells[column][row].isEmpty() && cells[column + 1][row].isEmpty();
+        return validCoordinate && cells[column][row] == 0 && cells[column + 1][row] == 0;
+    }
+    
+    public int readCell(int column, int row) {
+        return cells[column][row];
     }
     
     public String getCellPositionString(int column, int row) {

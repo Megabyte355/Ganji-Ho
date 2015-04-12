@@ -30,7 +30,7 @@ public class Computer {
         
         // Assume children are sorted
         Cell lastMove = root.findBestChildBoard().getBoard().getLastMove();
-        return b.getCellPositionString(lastMove.getColumn(), lastMove.getRow());
+        return b.getCellPositionString(lastMove.col, lastMove.row);
     }
     
     public void playOnBoard(Board board) throws BadMoveException {
@@ -85,7 +85,7 @@ public class Computer {
     }
     
     public void resetHeuristics(BoardNode root) {
-        root.setHeuristicValue(0);
+        root.setHeuristicValue(null);
         for(BoardNode child : root.getChildren()) {
             resetHeuristics(child);
         }
@@ -106,13 +106,14 @@ public class Computer {
             return;
         }
         
-        Cell.CellState state = node.getBoard().getLastMove().state;
+        Cell lastMove = node.getBoard().getLastMove();
+        int color = node.getBoard().readCell(lastMove.col, lastMove.row);
         BoardNode parentNode = node.getParent();
         
         Integer parentHeuristic = parentNode.getHeuristicValue();
         Integer currentHeuristic = node.getHeuristicValue();
         
-        if((state == Cell.CellState.WHITE && playerColor == Color.WHITE) || state == Cell.CellState.BLACK && playerColor == Color.BLACK) {
+        if((color == 1 && playerColor == Color.WHITE) || color == 2 && playerColor == Color.BLACK) {
             // If it was the computer that played - Maximize
             if(parentHeuristic == null || parentHeuristic < currentHeuristic) {
                 parentNode.setHeuristicValue(currentHeuristic);

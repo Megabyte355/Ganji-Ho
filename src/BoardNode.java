@@ -97,7 +97,7 @@ public class BoardNode implements Comparable<BoardNode> {
         // Only verifies cell contents
         for(int col = 0; col < board.cells.length; col++) {
             for(int row = 0; row < board.cells[col].length; row++) {
-                if(!board.cells[col][row].equals(b.board.cells[col][row])) {
+                if(board.cells[col][row] != b.board.cells[col][row]) {
                     return false;
                 }
             }
