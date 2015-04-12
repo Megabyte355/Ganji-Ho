@@ -108,38 +108,21 @@ public class ProgramDriver {
         boolean whiteCanPlay = board.getWhitePlaceableCells().size() > 0; 
         boolean blackCanPlay = board.getBlackPlaceableCells().size() > 0;
         while(whiteCanPlay && blackCanPlay) {
-
             // White player's turn
             board.printWhitePlaceableCells();
-            whiteCanPlay = board.getWhitePlaceableCells().size() > 0;
-            if(whiteCanPlay) {
-                computer.readBoard(board);
-                try {
-                    computer.playOnBoard(board);
-                } catch(BadMoveException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Aborting program...");
-                    return;
-                }
-            } else {
-                System.out.println("White ran out of moves! Black wins!");
+            whiteCanPlay = computerTurn(computer, board);
+            if(!whiteCanPlay) {
+                System.out.println("WHITE ran out of moves! BLACK wins!");
                 break;
             }
             System.out.println(board);
 
             // Black player's turn
             board.printBlackPlaceableCells();
-            blackCanPlay = board.getBlackPlaceableCells().size() > 0;
-            if(blackCanPlay) {
-                boolean validMove = false;
-                while(!validMove) {
-                    System.out.print("Black's move: ");
-                    String input = reader.nextLine();
-                    validMove = board.placeBlack(input);
-                }
-            } else {
-                System.out.println("Black ran out of moves! White wins!");
-                break;
+            blackCanPlay = humanTurn(board, Color.BLACK, reader);
+            if(!blackCanPlay) {
+                System.out.println("BLACK ran out of moves! WHITE wins!");
+                break;                   
             }
             System.out.println(board);
         }
@@ -158,33 +141,19 @@ public class ProgramDriver {
 
             // White player's turn
             board.printWhitePlaceableCells();
-            whiteCanPlay = board.getWhitePlaceableCells().size() > 0;
-            if(whiteCanPlay) {
-                boolean validMove = false;
-                while(!validMove) {
-                    System.out.print("White's move: ");
-                    String input = reader.nextLine();
-                    validMove = board.placeWhite(input);
-                }
-            } else {
-                System.out.println("White ran out of moves! Black wins!");
+            whiteCanPlay = humanTurn(board, Color.WHITE, reader);
+            if(!whiteCanPlay) {
+                System.out.println("WHITE ran out of moves! BLACK wins!");
                 break;
             }
             System.out.println(board);
 
             // Black player's turn
             board.printBlackPlaceableCells();
-            blackCanPlay = board.getBlackPlaceableCells().size() > 0;
-            if(blackCanPlay) {
-                boolean validMove = false;
-                while(!validMove) {
-                    System.out.print("Black's move: ");
-                    String input = reader.nextLine();
-                    validMove = board.placeBlack(input);
-                }
-            } else {
-                System.out.println("Black ran out of moves! White wins!");
-                break;
+            blackCanPlay = humanTurn(board, Color.BLACK, reader);
+            if(!blackCanPlay) {
+                System.out.println("BLACK ran out of moves! WHITE wins!");
+                break;                   
             }
             System.out.println(board);
         }
