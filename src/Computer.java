@@ -9,6 +9,9 @@ public class Computer {
     int maxDepth;
     BoardNode root;
     private ArrayList<BoardNode> leaves;
+    
+    int heuristicEncouragement = 2;
+    int heuristicDiscouragement = -5;
 
     public Computer(Color c) {
         playerColor = c;
@@ -70,12 +73,26 @@ public class Computer {
         int blackMoves = node.getBoard().getBlackPlaceableCells().size(); 
         
         int heuristic = 0;
+        int encouragement = 0;
+        int discouragement = 0;
         switch(playerColor) {
         case WHITE:
-            heuristic = blackMoves == 0 ? 9999 : whiteMoves - blackMoves;
+            if(blackMoves == 0) {
+                encouragement = heuristicEncouragement;
+            }
+            if(whiteMoves == 0) {
+                discouragement = heuristicDiscouragement;
+            }
+            heuristic = (whiteMoves - blackMoves) + encouragement + discouragement;
             break;
         case BLACK:
-            heuristic = whiteMoves == 0 ? 9999 : blackMoves - whiteMoves;
+            if(whiteMoves == 0) {
+                encouragement = heuristicEncouragement;
+            }
+            if(blackMoves == 0) {
+                discouragement = heuristicDiscouragement;
+            }
+            heuristic = (blackMoves - whiteMoves) + encouragement + discouragement;
             break;
         default:
             break;
