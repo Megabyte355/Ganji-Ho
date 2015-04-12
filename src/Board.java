@@ -40,7 +40,9 @@ public class Board {
                 cells[i][j] = b.cells[i][j];
             }
         }
-        lastMove = new Cell(b.lastMove);
+        if(b.lastMove != null) {
+            lastMove = new Cell(b.lastMove);
+        }
     }
     
     public String toString() {

@@ -66,21 +66,20 @@ public class Computer {
     // Simple heuristic to evaluate a board for now    
     public void evaluateNode(BoardNode node) {
 
-        ArrayList<Cell> whiteMoves = node.getBoard().getWhitePlaceableCells();
-        ArrayList<Cell> blackMoves = node.getBoard().getBlackPlaceableCells();
+        int whiteMoves = node.getBoard().getWhitePlaceableCells().size();
+        int blackMoves = node.getBoard().getBlackPlaceableCells().size(); 
         
         int heuristic = 0;
         switch(playerColor) {
         case WHITE:
-            heuristic = whiteMoves.size() - blackMoves.size();
+            heuristic = blackMoves == 0 ? 9999 : whiteMoves - blackMoves;
             break;
         case BLACK:
-            heuristic = blackMoves.size() - whiteMoves.size();
+            heuristic = whiteMoves == 0 ? 9999 : blackMoves - whiteMoves;
             break;
         default:
             break;
         }
-        
         node.setHeuristicValue(heuristic);
     }
     
