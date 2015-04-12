@@ -87,6 +87,16 @@ public class Board {
         return lastMove;
     }
     
+    public boolean place(String input, Color color) {
+        if(color == Color.WHITE) {
+            return placeWhite(input);
+        } else if (color == Color.BLACK) {
+            return placeBlack(input);
+        } else {
+            return false;
+        }
+    }
+    
     public boolean placeWhite(String input) {
         Matcher matcher = validInputPatern.matcher(input);
         
@@ -169,6 +179,17 @@ public class Board {
         }
         output += "]";
         System.out.println(output);
+    }
+    
+    public ArrayList<Cell> getPlaceableCells(Color color)
+    {
+        if(color == Color.WHITE) {
+            return getWhitePlaceableCells();
+        } else if (color == Color.BLACK) {
+            return getBlackPlaceableCells();
+        } else {
+            return null;
+        }
     }
     
     public ArrayList<Cell> getWhitePlaceableCells() {

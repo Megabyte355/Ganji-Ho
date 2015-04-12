@@ -39,7 +39,7 @@ public class ProgramDriver {
         Board board = new Board();
         Scanner reader = new Scanner(System.in);
         
-        Computer computer = new Computer(Computer.Color.BLACK);
+        Computer computer = new Computer(Color.BLACK);
         
         System.out.println(board);
         
@@ -49,48 +49,59 @@ public class ProgramDriver {
 
             // White player's turn
             board.printWhitePlaceableCells();
-            whiteCanPlay = board.getWhitePlaceableCells().size() > 0;
-            if(whiteCanPlay) {
-                boolean validMove = false;
-                while(!validMove) {
-                    System.out.print("White's move: ");
-                    String input = reader.nextLine();
-                    validMove = board.placeWhite(input);
-                }
-            } else {
-                System.out.println("White ran out of moves! Black wins!");
+            whiteCanPlay = humanTurn(board, Color.WHITE, reader);
+            if(!whiteCanPlay) {
+                System.out.println("WHITE ran out of moves! BLACK wins!");
                 break;
             }
             System.out.println(board);
 
             // Black player's turn
             board.printBlackPlaceableCells();
-            blackCanPlay = board.getBlackPlaceableCells().size() > 0;
-            if(blackCanPlay) {
-                
-                computer.readBoard(board);
-                try {
-                    computer.playOnBoard(board);
-                } catch(BadMoveException e) {
-                    System.out.println(e.getMessage());
-                    System.out.println("Aborting program...");
-                    return;
-                }
-
-            } else {
-                System.out.println("Black ran out of moves! White wins!");
-                break;
+            blackCanPlay = computerTurn(computer, board);
+            if(!blackCanPlay) {
+                System.out.println("BLACK ran out of moves! WHITE wins!");
+                break;                   
             }
             System.out.println(board);
         }
         reader.close();
     }
     
+    
+    private static boolean humanTurn(Board board, Color color, Scanner reader) {
+        boolean canPlay = board.getPlaceableCells(color).size() > 0;
+        if(canPlay) {
+            boolean validMove = false;
+            while(!validMove) {
+                System.out.print(color.toString() + "'s move: ");
+                String input = reader.nextLine();
+                validMove = board.place(input, color);
+            }
+        }
+        return canPlay;
+    }
+    
+    private static boolean computerTurn(Computer computer, Board board) {
+        boolean canPlay = board.getPlaceableCells(computer.playerColor).size() > 0;
+        if(canPlay) {
+            computer.readBoard(board);
+            try {
+                computer.playOnBoard(board);
+            } catch(BadMoveException e) {
+                System.out.println(e.getMessage());
+                System.out.println("Aborting program...");
+                System.exit(0);
+            }
+        }
+        return canPlay;
+    }
+    
     private static void onePlayerGameTypeB() {
         Board board = new Board();
         Scanner reader = new Scanner(System.in);
         
-        Computer computer = new Computer(Computer.Color.WHITE);
+        Computer computer = new Computer(Color.WHITE);
         
         System.out.println(board);
         

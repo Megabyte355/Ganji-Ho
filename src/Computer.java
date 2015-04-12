@@ -1,10 +1,8 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-
 public class Computer {
 
-    public enum Color {WHITE, BLACK}
     Color playerColor;
     int maxDepth;
     BoardNode root;
