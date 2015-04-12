@@ -24,7 +24,7 @@ public class Computer {
         
         // Recursive call to get children of all children (until max depth)
         generateChildren(root, 1, playerColor);
-        evaluateTree();
+        evaluateTree(root);
     }
     
     public String getBestMove(Board b) {
@@ -100,18 +100,30 @@ public class Computer {
     
     public void resetHeuristics(BoardNode root) {
         root.setHeuristicValue(null);
+        root.setPruned(false);
         for(BoardNode child : root.getChildren()) {
             resetHeuristics(child);
         }
     }
     
-    public void evaluateTree() {
-        resetHeuristics(root);
+    public void evaluateTree(BoardNode node) {
+        ArrayList<BoardNode> children = node.getChildren();
         
-        for(BoardNode current : leaves) {
-            evaluateNode(current);
-            minimaxPropagation(current);
+        if(children.size() > 0) {
+            // Depth first search in children
+            for(BoardNode child : node.getChildren()) {
+                if(!child.isPruned()) {
+                    evaluateTree(child);
+                }
+            }
         }
+        else
+        {
+            // We are at a root - evaluate node!
+            evaluateNode(node);
+            minimaxPropagation(node);
+        }
+
     }
     
     // Recursively propagate values up the tree
@@ -132,12 +144,18 @@ public class Computer {
             if(parentHeuristic == null || parentHeuristic < currentHeuristic) {
                 parentNode.setHeuristicValue(currentHeuristic);
                 minimaxPropagation(parentNode);
+            } else {
+                // Everything else is useless! Prune!
+                parentNode.pruneAllRemainingChildren();
             }
         } else {
             // If it was the opponent who played - Minimize
             if(parentHeuristic == null || parentHeuristic > currentHeuristic) {
                 parentNode.setHeuristicValue(currentHeuristic);
                 minimaxPropagation(parentNode);
+            } else {
+                // Everything else is useless! Prune!
+                parentNode.pruneAllRemainingChildren();
             }
         }
     }
