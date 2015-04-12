@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Random;
 
 public class BoardNode implements Comparable<BoardNode> {
     Board board;
@@ -60,17 +60,25 @@ public class BoardNode implements Comparable<BoardNode> {
           return null;
       }
       
-      BoardNode currentMaxNode = children.get(0);
-      int currentMaxHeuristic = currentMaxNode.getHeuristicValue();
-
+      int currentMaxHeuristic = children.get(0).getHeuristicValue();
+      
       for(BoardNode n : children) {
           if(n.getHeuristicValue() > currentMaxHeuristic) {
-              currentMaxNode = n;
               currentMaxHeuristic = n.getHeuristicValue();
           }
       }
       
-      return currentMaxNode;
+      ArrayList<BoardNode> bestChoices = new ArrayList<BoardNode>();
+      for(BoardNode n : children) {
+          if(n.getHeuristicValue() == currentMaxHeuristic) {
+              bestChoices.add(n);
+          }
+      }
+      
+      Random r = new Random();
+      int chosenOne = r.nextInt(bestChoices.size());
+      
+      return bestChoices.get(chosenOne);
     }
     
     public BoardNode getBoardNodeInChildren(Board b) {
