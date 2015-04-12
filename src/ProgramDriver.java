@@ -12,6 +12,7 @@ public class ProgramDriver {
         System.out.println("\t1 - Player vs Computer");
         System.out.println("\t2 - Computer vs Player");
         System.out.println("\t3 - Player vs Player");
+        System.out.println("\t4 - Computer vs Computer");
         System.out.print("Choice: ");
         String input = reader.nextLine();
         
@@ -28,46 +29,13 @@ public class ProgramDriver {
             onePlayerGameTypeB();
         } else if(option == 3) {
             twoPlayerGame();
+        } else if(option == 4) {
+            twoComputerGame();
         }
         
         reader.close();
         System.out.println("\nThank you for playing!");
-        
     }
-
-    private static void onePlayerGameTypeA() {
-        Board board = new Board();
-        Scanner reader = new Scanner(System.in);
-        
-        Computer computer = new Computer(Color.BLACK);
-        
-        System.out.println(board);
-        
-        boolean whiteCanPlay = board.getWhitePlaceableCells().size() > 0; 
-        boolean blackCanPlay = board.getBlackPlaceableCells().size() > 0;
-        while(whiteCanPlay && blackCanPlay) {
-
-            // White player's turn
-            board.printWhitePlaceableCells();
-            whiteCanPlay = humanTurn(board, Color.WHITE, reader);
-            if(!whiteCanPlay) {
-                System.out.println("WHITE ran out of moves! BLACK wins!");
-                break;
-            }
-            System.out.println(board);
-
-            // Black player's turn
-            board.printBlackPlaceableCells();
-            blackCanPlay = computerTurn(computer, board);
-            if(!blackCanPlay) {
-                System.out.println("BLACK ran out of moves! WHITE wins!");
-                break;                   
-            }
-            System.out.println(board);
-        }
-        reader.close();
-    }
-    
     
     private static boolean humanTurn(Board board, Color color, Scanner reader) {
         boolean canPlay = board.getPlaceableCells(color).size() > 0;
@@ -96,6 +64,39 @@ public class ProgramDriver {
         }
         return canPlay;
     }
+
+    private static void onePlayerGameTypeA() {
+        Board board = new Board();
+        Scanner reader = new Scanner(System.in);
+        
+        Computer computer = new Computer(Color.BLACK);
+        
+        System.out.println(board);
+        
+        boolean whiteCanPlay = board.getWhitePlaceableCells().size() > 0; 
+        boolean blackCanPlay = board.getBlackPlaceableCells().size() > 0;
+        while(whiteCanPlay && blackCanPlay) {
+
+            // White player's turn
+            board.printWhitePlaceableCells();
+            whiteCanPlay = humanTurn(board, Color.WHITE, reader);
+            if(!whiteCanPlay) {
+                System.out.println("WHITE ran out of moves! BLACK wins!");
+                break;
+            }
+            System.out.println(board);
+
+            // Black player's turn
+            board.printBlackPlaceableCells();
+            blackCanPlay = computerTurn(computer, board);
+            if(!blackCanPlay) {
+                System.out.println("BLACK ran out of moves! WHITE wins!");
+                break;
+            }
+            System.out.println(board);
+        }
+        reader.close();
+    }
     
     private static void onePlayerGameTypeB() {
         Board board = new Board();
@@ -122,7 +123,7 @@ public class ProgramDriver {
             blackCanPlay = humanTurn(board, Color.BLACK, reader);
             if(!blackCanPlay) {
                 System.out.println("BLACK ran out of moves! WHITE wins!");
-                break;                   
+                break;
             }
             System.out.println(board);
         }
@@ -153,11 +154,43 @@ public class ProgramDriver {
             blackCanPlay = humanTurn(board, Color.BLACK, reader);
             if(!blackCanPlay) {
                 System.out.println("BLACK ran out of moves! WHITE wins!");
-                break;                   
+                break;
             }
             System.out.println(board);
         }
         reader.close();
+    }
+    
+    private static void twoComputerGame() {
+        Board board = new Board();
+        
+        Computer comp1 = new Computer(Color.WHITE);
+        Computer comp2 = new Computer(Color.BLACK);
+        
+        System.out.println(board);
+        
+        boolean whiteCanPlay = board.getWhitePlaceableCells().size() > 0; 
+        boolean blackCanPlay = board.getBlackPlaceableCells().size() > 0;
+        while(whiteCanPlay && blackCanPlay) {
+
+            // White player's turn
+            board.printWhitePlaceableCells();
+            whiteCanPlay = computerTurn(comp1, board);
+            if(!whiteCanPlay) {
+                System.out.println("WHITE ran out of moves! BLACK wins!");
+                break;
+            }
+            System.out.println(board);
+
+            // Black player's turn
+            board.printBlackPlaceableCells();
+            blackCanPlay = computerTurn(comp2, board);
+            if(!blackCanPlay) {
+                System.out.println("BLACK ran out of moves! WHITE wins!");
+                break;
+            }
+            System.out.println(board);
+        }
     }
 
 }
