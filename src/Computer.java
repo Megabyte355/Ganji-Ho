@@ -8,8 +8,9 @@ public class Computer {
     BoardNode root;
     private ArrayList<BoardNode> leaves;
     
-    int heuristicEncouragement = 2;
-    int heuristicDiscouragement = -5;
+    int heuristicSecureBonus = 1;
+    int heuristicWinBonus = 3;
+    int heuristicLosePenalty = -5;
 
     public Computer(Color c) {
         playerColor = c;
@@ -71,26 +72,54 @@ public class Computer {
         int blackMoves = node.getBoard().getBlackPlaceableCells().size(); 
         
         int heuristic = 0;
-        int encouragement = 0;
-        int discouragement = 0;
+        int secureBonus = 0;
+        int winBonus = 0;
+        int losePenalty = 0;
+        
+        Board board = node.getBoard();
+        Cell move = board.getLastMove();
+        
         switch(playerColor) {
         case WHITE:
+            // Secure move on left            
+            if(!board.canPlaceWhite(move.col - 2, move.row) && board.canPlaceWhite(move.col - 1, move.row)) {
+                secureBonus += heuristicSecureBonus;
+            }
+            
+            // Secure move on right
+            if(!board.canPlaceWhite(move.col + 2, move.row) && board.canPlaceWhite(move.col + 1, move.row)) {
+                secureBonus += heuristicSecureBonus;
+            }
+            
+            // Game ender bonus and penalty
             if(blackMoves == 0) {
-                encouragement = heuristicEncouragement;
+                winBonus = heuristicWinBonus;
             }
             if(whiteMoves == 0) {
-                discouragement = heuristicDiscouragement;
+                losePenalty = heuristicLosePenalty;
             }
-            heuristic = (whiteMoves - blackMoves) + encouragement + discouragement;
+            
+            heuristic = (whiteMoves - blackMoves) + winBonus + losePenalty + secureBonus;
             break;
         case BLACK:
+            // Secure move on top            
+            if(!board.canPlaceBlack(move.col, move.row - 2) && board.canPlaceBlack(move.col, move.row - 1)) {
+                secureBonus += heuristicSecureBonus;
+            }
+            
+            // Secure move on bottom
+            if(!board.canPlaceBlack(move.col, move.row + 2) && board.canPlaceBlack(move.col, move.row + 1)) {
+                secureBonus += heuristicSecureBonus;
+            }
+            
+            // Game ender bonus and penalty
             if(whiteMoves == 0) {
-                encouragement = heuristicEncouragement;
+                winBonus = heuristicWinBonus;
             }
             if(blackMoves == 0) {
-                discouragement = heuristicDiscouragement;
+                losePenalty = heuristicLosePenalty;
             }
-            heuristic = (blackMoves - whiteMoves) + encouragement + discouragement;
+            heuristic = (blackMoves - whiteMoves) + winBonus + losePenalty + secureBonus;
             break;
         default:
             break;

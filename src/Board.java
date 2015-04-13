@@ -216,13 +216,13 @@ public class Board {
         return list;
     }
     
-    private boolean canPlaceWhite(int column, int row) {
+    public boolean canPlaceWhite(int column, int row) {
         
         boolean validCoordinate = column >= 0 && column < cells.length && row >= 0 && (row + 1) < cells[column].length;
         return validCoordinate && cells[column][row] == 0 && cells[column][row + 1] == 0;
     }
     
-    private boolean canPlaceBlack(int column, int row) {
+    public boolean canPlaceBlack(int column, int row) {
         boolean validCoordinate = column >= 0 && (column + 1) < cells.length && row >= 0 && row < cells[column].length;
         return validCoordinate && cells[column][row] == 0 && cells[column + 1][row] == 0;
     }
