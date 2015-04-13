@@ -5,7 +5,6 @@ public class BoardNode implements Comparable<BoardNode> {
     Board board;
     Integer heuristic;
     Color playerMove;
-    boolean pruned;
     
     private BoardNode parent;
     private ArrayList<BoardNode> children;
@@ -15,7 +14,6 @@ public class BoardNode implements Comparable<BoardNode> {
         board = b;
         heuristic = null;
         playerMove = color;
-        pruned = false;
         
         children = new ArrayList<BoardNode>();
     }
@@ -50,23 +48,6 @@ public class BoardNode implements Comparable<BoardNode> {
         return parent;
     }
     
-    public void setPruned(boolean p) {
-        pruned = true;
-    }
-    
-    public boolean isPruned() {
-        return pruned;
-    }
-    
-    public void pruneAllRemainingChildren() {
-        for(BoardNode child : children) {
-            if(child.heuristic == null) {
-                child.pruned = true;
-                child.pruneAllRemainingChildren();                
-            }
-        }
-    }
-    
     public ArrayList<BoardNode> getChildren() {
         return children;
     }
@@ -86,17 +67,17 @@ public class BoardNode implements Comparable<BoardNode> {
           return null;
       }
       
-      int currentMaxHeuristic = findFirstUnpruned().getHeuristicValue();
+      int currentMaxHeuristic = children.get(0).getHeuristicValue();
       
       for(BoardNode n : children) {
-          if(!n.isPruned() && n.getHeuristicValue() > currentMaxHeuristic) {
+          if(n.getHeuristicValue() > currentMaxHeuristic) {
               currentMaxHeuristic = n.getHeuristicValue();
           }
       }
       
       ArrayList<BoardNode> bestChoices = new ArrayList<BoardNode>();
       for(BoardNode n : children) {
-          if(!n.isPruned() && n.getHeuristicValue() == currentMaxHeuristic) {
+          if(n.getHeuristicValue() == currentMaxHeuristic) {
               bestChoices.add(n);
           }
       }
@@ -137,14 +118,5 @@ public class BoardNode implements Comparable<BoardNode> {
             }
         }
         return true;
-    }
-    
-    private BoardNode findFirstUnpruned() {
-        for(BoardNode n : children) {
-            if(!n.isPruned()) {
-                return n;
-            }
-        }
-        return null;
     }
 }
